@@ -1,13 +1,14 @@
 const WebSocket = require('ws');
 const { MessageType, ClientType } = require('./types');
+const ConnectionManager = require('./ConnectionManager');
+const MessageRouter = require('./MessageRouter');
 
 class GatewayWebSocketServer {
   constructor(config) {
     this.wss = null;
     this.config = config;
-    this.sessions = new Map();
-    this.openclawConnections = new Map();
-    this.appConnections = new Map();
+    this.connectionManager = new ConnectionManager();
+    this.messageRouter = new MessageRouter(this.connectionManager);
   }
 
   start() {
@@ -22,58 +23,43 @@ class GatewayWebSocketServer {
 
   handleConnection(ws) {
     const clientId = this.generateClientId();
-    let clientType = null;
-    let heartbeatTimer = null;
-
-    const sendPing = () => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ type: MessageType.PING, timestamp: Date.now() }));
-      }
-    };
+    let registered = false;
 
     ws.on('message', (data) => {
-      this.handleMessage(ws, data, clientId);
+      const messageStr = data.toString();
+      let message;
+      
+      try {
+        message = JSON.parse(messageStr);
+      } catch {
+        console.error('Invalid JSON received');
+        return;
+      }
+
+      if (message.type === MessageType.CONNECT) {
+        const clientType = message.clientType;
+        this.connectionManager.register(ws, clientId, clientType);
+        registered = true;
+        
+        ws.send(JSON.stringify({
+          type: MessageType.CONNECT,
+          clientId,
+          timestamp: Date.now()
+        }));
+      } else if (registered) {
+        this.messageRouter.route(ws, messageStr, clientId);
+      }
     });
 
     ws.on('close', () => {
-      if (heartbeatTimer) clearInterval(heartbeatTimer);
-      this.handleDisconnect(clientId, clientType);
+      if (registered) {
+        this.connectionManager.unregister(clientId, null);
+      }
     });
 
     ws.on('error', (error) => {
       console.error(`Client ${clientId} error:`, error.message);
     });
-
-    ws.send(JSON.stringify({
-      type: MessageType.CONNECT,
-      clientId,
-      timestamp: Date.now()
-    }));
-  }
-
-  handleMessage(ws, data, clientId) {
-    try {
-      const message = JSON.parse(data.toString());
-      
-      switch (message.type) {
-        case MessageType.PING:
-          ws.send(JSON.stringify({ type: MessageType.PONG, timestamp: Date.now() }));
-          break;
-        default:
-          console.log(`Received:`, message);
-      }
-    } catch (error) {
-      console.error('Failed to parse message:', error.message);
-    }
-  }
-
-  handleDisconnect(clientId, clientType) {
-    if (clientType === ClientType.OPENCLAW) {
-      this.openclawConnections.delete(clientId);
-    } else if (clientType === ClientType.APP) {
-      this.appConnections.delete(clientId);
-    }
-    console.log(`Client ${clientId} disconnected`);
   }
 
   generateClientId() {
