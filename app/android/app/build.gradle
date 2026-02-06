@@ -1,0 +1,16 @@
+android {
+    namespace "com.example.im_bot_gateway"
+    compileSdk 34
+    defaultConfig {
+        applicationId "com.example.im_bot_gateway"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+    }
+}
