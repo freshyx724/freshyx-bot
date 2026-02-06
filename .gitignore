@@ -30,3 +30,4 @@ pubspec.lock
 .local.properties
 .externalNativeBuild/
 .cxx/
+node_modules/
