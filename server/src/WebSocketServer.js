@@ -54,7 +54,7 @@ class GatewayWebSocketServer {
 
     ws.on('close', () => {
       if (registered) {
-        this.connectionManager.unregister(clientId, null);
+        this.connectionManager.unregister(clientId);
       }
     });
 

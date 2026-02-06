@@ -4,9 +4,12 @@ class ConnectionManager {
   constructor() {
     this.openclawConnections = new Map();
     this.appConnections = new Map();
+    this.clientTypes = new Map();
   }
 
   register(ws, clientId, clientType) {
+    this.clientTypes.set(clientId, clientType);
+    
     if (clientType === ClientType.OPENCLAW) {
       this.openclawConnections.set(clientId, { ws, connectedAt: Date.now() });
     } else if (clientType === ClientType.APP) {
@@ -15,12 +18,16 @@ class ConnectionManager {
     console.log(`Registered ${clientType}: ${clientId}`);
   }
 
-  unregister(clientId, clientType) {
+  unregister(clientId) {
+    const clientType = this.clientTypes.get(clientId);
+    
     if (clientType === ClientType.OPENCLAW) {
       this.openclawConnections.delete(clientId);
     } else if (clientType === ClientType.APP) {
       this.appConnections.delete(clientId);
     }
+    
+    this.clientTypes.delete(clientId);
     console.log(`Unregistered ${clientType}: ${clientId}`);
   }
 

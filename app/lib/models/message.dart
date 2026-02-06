@@ -20,9 +20,10 @@ class Message {
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {
+    final typeStr = json['type']?.toString().toLowerCase() ?? 'cmd';
     return Message(
       type: MessageType.values.firstWhere(
-        (e) => e.toString() == 'MessageType.${json['type']}',
+        (e) => e.toString() == 'MessageType.$typeStr',
         orElse: () => MessageType.cmd,
       ),
       id: json['id'],
