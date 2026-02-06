@@ -1,0 +1,121 @@
+---
+v: "1.0"
+pid: "freshyx-bot"
+ts: "2026-02-06T12:00:00Z"
+req:
+  obj: "IM通信网关App，用于与OpenClaw设备进行人机交互"
+  func:
+    - id: "F1"
+      d: "WebSocket长连接服务"
+      s: "completed"
+      p: "high"
+    - id: "F2"
+      d: "命令发送和结果回传"
+      s: "completed"
+      p: "high"
+    - id: "F3"
+      d: "Flutter对话框UI"
+      s: "completed"
+      p: "high"
+    - id: "F4"
+      d: "Android平台配置"
+      s: "completed"
+      p: "medium"
+    - id: "F5"
+      d: "用户认证"
+      s: "pending"
+      p: "medium"
+    - id: "F6"
+      d: "离线消息"
+      s: "pending"
+      p: "low"
+  non_func:
+    - "轻量级，占用资源少"
+    - "连接稳定，支持心跳保活"
+    - "安全性: IP白名单, auth token(待开发)"
+arch:
+  stack:
+    lang: ["nodejs", "dart"]
+    fw: ["ws", "flutter"]
+    db: []
+  mod:
+    - n: "server"
+      p: "server/src"
+      d: "WebSocket服务端，消息路由中转"
+      deps: ["ws"]
+    - n: "app"
+      p: "app/lib"
+      d: "Flutter客户端，对话框界面"
+      deps: ["web_socket_channel", "uuid"]
+  pattern: "C/S架构，WebSocket长连接"
+  data_flow: "App -> WS Server -> OpenClaw"
+conf:
+  server:
+    port: 8767
+    ws: "ws://SERVER_IP:8767"
+  app:
+    serverUrl: "ws://SERVER_IP:8767"
+    cfg: "app/lib/config.dart"
+loc:
+  entry: "server/src/index.js"
+  ws_server: "server/src/WebSocketServer.js"
+  ws_client: "app/lib/services/websocket_service.dart"
+  ui: "app/lib/screens/home_screen.dart"
+  deploy: "deploy/scripts/"
+  github: "https://github.com/freshyx724/freshyx-bot"
+state:
+  focus: "MVP已完成，准备部署测试"
+  dec:
+    - "使用Flutter跨平台而非原生Android"
+    - "使用Node.js + ws库作为WebSocket服务端"
+    - "服务端地址通过Flutter dart-define配置"
+    - "使用PM2管理Node.js进程"
+    - "暂不需要SSL，IP直连访问"
+  todo:
+    - t: "服务器部署测试"
+      s: "pending"
+      p: "high"
+    - t: "App连接测试"
+      s: "pending"
+      p: "high"
+    - t: "命令发送和结果回传测试"
+      s: "pending"
+      p: "high"
+    - t: "添加用户认证"
+      s: "pending"
+      p: "medium"
+ver:
+  curr:
+    app: "1.0.0"
+    server: "1.0.0"
+  dep:
+    - n: "node"
+      v: ">=18.x"
+    - n: "flutter"
+      v: ">=3.0"
+    - n: "ws"
+      v: "^8.14.2"
+    - n: "web_socket_channel"
+      v: "^2.4.0"
+ctx:
+  env:
+    local: "Windows 11"
+    server: "Alibaba Cloud Linux 4 LTS 64位 容器优化版"
+  dev_tools:
+    - "Flutter SDK >= 3.0"
+    - "Node.js >= 18.x"
+    - "PM2"
+    - "Nginx"
+  deploy_tools:
+    - "deploy/scripts/deploy.bat"
+    - "deploy/scripts/server-setup.sh"
+    - "deploy/scripts/server-deploy.sh"
+  notes:
+    - "MVP阶段不需要公网域名，IP直连"
+    - "OpenClaw作为客户端主动连接服务端"
+    - "App和OpenClaw通过服务端转发消息"
+    - "测试脚本: server/test/comprehensive.test.js"
+  issues:
+    - "I1": "服务端IP地址需动态配置"
+    - "I2": "用户认证待后续开发"
+---
