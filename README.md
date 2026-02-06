@@ -1,6 +1,10 @@
-# im-bot-gateway
+# freshyx-bot
 
-IM Bot Gateway - 一个独立的IM通信App，用于与OpenClaw设备进行人机交互。
+Freshyx Bot - 一个独立的IM通信App，用于与OpenClaw设备进行人机交互。
+
+## GitHub
+
+https://github.com/freshyx724/freshyx-bot
 
 ## 快速开始
 
