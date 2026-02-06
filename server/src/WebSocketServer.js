@@ -2,6 +2,7 @@ const WebSocket = require('ws');
 const { MessageType, ClientType } = require('./types');
 const ConnectionManager = require('./ConnectionManager');
 const MessageRouter = require('./MessageRouter');
+const logger = require('./Logger');
 
 class GatewayWebSocketServer {
   constructor(config) {
