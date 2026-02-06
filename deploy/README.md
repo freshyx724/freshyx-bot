@@ -1,4 +1,8 @@
-# im-bot-gateway 部署指南
+# freshyx-bot 部署指南
+
+## 仓库地址
+
+GitHub: https://github.com/freshyx724/freshyx-bot
 
 ## 目录结构
 
@@ -37,7 +41,7 @@ deploy/
 ssh root@your_server_ip
 
 # 下载并运行初始化脚本
-curl -sL https://raw.githubusercontent.com/your-repo/im-bot-gateway/main/deploy/scripts/server-setup.sh | bash
+curl -sL https://raw.githubusercontent.com/freshyx724/freshyx-bot/main/deploy/scripts/server-setup.sh | bash
 
 # 完成后退出
 exit
@@ -47,7 +51,7 @@ exit
 
 ```bash
 # 进入项目目录
-cd im-bot-gateway
+cd freshyx-bot
 
 # 运行部署脚本
 deploy.bat your_server_ip

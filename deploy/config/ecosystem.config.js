@@ -66,7 +66,7 @@ module.exports = {
       user: 'deploy',
       host: ['0.0.0.0'],
       ref: 'origin/master',
-      repo: 'git@github.com:your-repo/im-bot-gateway.git',
+      repo: 'git@github.com:freshyx724/freshyx-bot.git',
       path: '/opt/im-bot-gateway',
       'post-deploy': 'npm install && pm2 reload ecosystem.config.js'
     }

@@ -5,6 +5,7 @@ import '../services/websocket_service.dart';
 import '../services/logger.dart';
 import '../widgets/command_input.dart';
 import '../widgets/message_list.dart';
+import '../config.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _initWebSocket() {
     _wsService = WebSocketService(
-      serverUrl: 'ws://localhost:8767',
+      serverUrl: AppConfig.serverUrl,
       onMessage: _handleMessage,
       onConnected: _handleConnected,
       onDisconnected: _handleDisconnected,
