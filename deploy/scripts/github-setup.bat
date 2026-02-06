@@ -1,56 +1,51 @@
 @echo off
-chcp 65001 >nul
 echo ========================================
-echo   GitHub 仓库创建和代码推送脚本
+echo   GitHub Repository Setup Script
 echo ========================================
 
 echo.
-echo [1/4] 创建GitHub仓库...
+echo [1/4] Create GitHub repository...
 
 echo.
-echo 请手动创建GitHub仓库:
-echo   1. 访问: https://github.com/new
+echo Please create GitHub repository manually:
+echo   1. Visit: https://github.com/new
 echo   2. Repository name: freshyx-bot
-echo   3. Description: Freshyx Bot - IM通信网关
-echo   4. 选择: Public
-echo   5. 不要勾选 "Add a README file"
-echo   6. 点击 "Create repository"
+echo   3. Description: Freshyx Bot - IM Communication Gateway
+echo   4. Select: Public
+echo   5. DO NOT check "Add a README file"
+echo   6. Click "Create repository"
 echo.
-echo 创建完成后按任意键继续...
+echo After creation, press any key to continue...
 pause >nul
 
 echo.
-echo [2/4] 添加远程仓库...
-echo.
-set /p SERVER_IP="请输入你的服务器IP地址: "
+echo [2/4] Add remote repository...
 echo.
 
 git remote add origin git@github.com:freshyx724/freshyx-bot.git
-echo [✓] 远程仓库已添加
+echo [OK] Remote repository added
 
 echo.
-echo [3/4] 推送代码到GitHub...
+echo [3/4] Push code to GitHub...
 echo.
-echo 首次推送需要验证GitHub SSH密钥...
+echo First push requires GitHub SSH key verification...
 echo.
 
 git push -u origin master
 
 echo.
-echo [4/4] 配置部署脚本...
-
+echo [4/4] Configure deployment scripts...
 echo.
-echo 更新服务器部署地址...
-git remote set-url origin git@github.com:freshyx724/freshyx-bot.git
+echo Update server deployment URL...
 
 echo.
 echo ========================================
-echo   完成!
+echo   Done!
 echo ========================================
 echo.
-echo 下一步:
-echo 1. 访问 https://github.com/freshyx724/freshyx-bot 查看仓库
-echo 2. 按照 deploy/README.md 进行服务器部署
+echo Next steps:
+echo 1. Visit https://github.com/freshyx724/freshyx-bot to view repository
+echo 2. Follow deploy/README.md for server deployment
 echo.
 
 pause
