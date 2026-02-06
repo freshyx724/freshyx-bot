@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+build/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Flutter
+.dart_tool/
+.packages
+build/
+pubspec.lock
+
+# Android
+*.iml
+.local.properties
+.externalNativeBuild/
+.cxx/
